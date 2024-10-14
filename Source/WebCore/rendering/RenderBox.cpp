@@ -824,6 +824,8 @@ LayoutPoint RenderBox::contentBoxLocation() const
 
 FloatRect RenderBox::referenceBoxRect(CSSBoxType boxType) const
 {
+    if (!this->containingBlock())
+        return LayoutRect(LayoutPoint(), size());
     switch (boxType) {
     case CSSBoxType::ContentBox:
     case CSSBoxType::FillBox:
@@ -2283,7 +2285,6 @@ LayoutUnit RenderBox::containingBlockLogicalWidthForContent() const
 
     if (auto* containingBlock = this->containingBlock())
         return isOutOfFlowPositioned() ? containingBlock->clientLogicalWidth() : containingBlock->availableLogicalWidth();
-
     ASSERT_NOT_REACHED();
     return 0_lu;
 }
